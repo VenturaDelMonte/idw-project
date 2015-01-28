@@ -3,6 +3,79 @@
 	require_once('utils.php');
 	require_once('mongo_helper.php');
 
+	function loadWikipedia($data)
+	{
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$query = new stdObject();
+		$query->_id = new MongoId($data);
+		$cursor = $assets->find($query);
+
+		foreach ($cursor as $asset) 
+		{ 
+			$what = str_replace(["...", "\n", "S.P.A", ",Inc"], "", $asset['name']);
+			
+		}
+		
+
+		$query_url = "http://en.wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($what);
+
+		$session = curl_init($query_url);
+    	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+    	$json = curl_exec($session);
+    	curl_close($session);
+
+    	$url = json_decode($json)[3][0];
+  		$xpath = scrapePage($url);
+
+		$ret = "";
+		foreach ($xpath->query('//*[@id="mw-content-text"]/table[contains(@class,"infobox")]') as $node)
+		{
+			$ret .= nodeContent($node, true);
+		} 
+		$ret = preg_replace("/href=\"(.*)\"/iU", " ", $ret);
+		$ret = preg_replace("/<a/iU", "<span", $ret);
+		return new stdObject(['data' => $ret, 'url' => $url]);
+	}
+
+
+	function loadYahooFinance($data)
+	{
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$query = new stdObject();
+		$query->_id = new MongoId($data);
+		$cursor = $assets->find($query);
+
+		foreach ($cursor as $asset) 
+		{ 
+			$what = $asset['sym'];	
+		}
+
+		$query_url = "http://query.yahooapis.com/v1/public/yql?q=";
+		//$query_url .= urlencode(sprintf("select * from html where url='http://finance.yahoo.com/q?s=%s' " 
+		//									. "and xpath='//*[@id=\"yfi_investing_content\"]/div[2]|//*[@id=\"yfi_quote_summary_data\"]'", $what));
+
+
+		$query_url .= urlencode('select * from yahoo.finance.quotes where symbol in ("'.$what.'")');//urlencode("select * from yahoo.finance.quote where symbol in (\"$what\")");
+
+		$query_url .= "&format=json&env=store://datatables.org/alltableswithkeys";
+
+		$session = curl_init($query_url);
+    	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+    	$json = json_decode(curl_exec($session));
+
+    	curl_close($session);
+
+
+    	return new stdObject(['data' => $json->query->results->quote]);
+	}
+
+
 	function loadIndices($data)
 	{
 		$mongo = new MongoHelper();

@@ -29,7 +29,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">IDW</a>
+          <a class="navbar-brand" href="#">D<sup>3</sup> Finance Aggregator</a>
         </div>
         
     </nav>
@@ -42,6 +42,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 id="select-index-h1" class="page-header">Select an index on the left</h1>
+          </hr>
           <!--
           <div class="row placeholders">
             <div class="col-xs-6 col-sm-3 placeholder">
@@ -69,12 +70,66 @@
           <h2 class="sub-header">Section title</h2> -->
           <div class="table-responsive">
             <table id="assets-table" class="table table-striped hidden">
-             
-              
+            
             </table>
           </div>
-        </div>
-      </div>
-    </div>
+          	<div id="asset-info" class="row hidden">
+                <div class="col-lg-9">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Yahoo Finance
+                           
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div id="yahoo-data"></div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Google Trends
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                               
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> News
+                            
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="row">
+                               
+                            </div>
+                            <!-- /.row -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+                    <!-- /.panel -->
+                <div class="col-lg-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-bar-chart-o fa-fw"></i> Wikipedia
+                        </div>
+                        <div id="wiki-data" class="panel-body">
+                           
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                </div>
+        		
+      		</div>
+    	</div>
 	</body>
 </html>

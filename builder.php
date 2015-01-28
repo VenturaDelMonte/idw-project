@@ -7,31 +7,6 @@ require_once('mongo_helper.php');
 
 require_once('utils.php');
 
-function scrapePage($source)
-{
-	$curl = curl_init();
-	$doc = new DOMDocument();
-	$tidy = new tidy();
-
-	curl_setopt($curl, CURLOPT_URL, $source);
-	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
-	curl_setopt($curl, CURLOPT_FAILONERROR, true);
-	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-	curl_setopt($curl, CURLOPT_AUTOREFERER, true);
-	curl_setopt($curl, CURLOPT_HEADER, false);
-	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
-	$result = curl_exec($curl);
-	
-	curl_close($curl);
-
-	$clean = $tidy->repairString($result);
-	$doc->strictErrorChecking = false;
-	$doc->recover = true;
-	$doc->loadHTML($clean);
-
-	return new DOMXPath($doc);
-}
 
 $mongo = new MongoHelper();
 $db = $mongo->idw;

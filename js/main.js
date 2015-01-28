@@ -4,6 +4,13 @@ window.onload = function(ev)
 	loadIndices();
 }
 
+function cleanAssetInfo()
+{
+	$('#asset-info').addClass('hidden');
+	$('#wiki-data').empty();
+	$('#yahoo-data').empty();
+}
+
 function loadIndices()
 {
 	var req = {"id": "loadIndices"};
@@ -19,6 +26,7 @@ function loadIndices()
 		    	var a = $('<a>').attr('href', data[index]._id.$id).append($('<span>').append(data[index].name));
 				a.click(function(e) {
 					e.preventDefault();
+					cleanAssetInfo();	
 					loadIndex(data[index]._id.$id);
 				});
 				$('#indices').append($('<li>').append(a))
@@ -32,7 +40,8 @@ function loadIndices()
 
 function loadIndex(idx)
 {
-	$('#select-index-h1').addClass('hidden');
+	//$('#select-index-h1').addClass('hidden');
+	$('#select-index-h1').text("");
 	$('#assets-table').removeClass('hidden');
 	$('#assets-table').empty();
 	var req = {"id": "loadAssets", "data": idx};
@@ -50,7 +59,7 @@ function loadIndex(idx)
 		    	var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
 		    	a.click(function (e){
 		    		e.preventDefault();
-		    		loadAsset(data[index].id.$id);
+		    		loadAsset(data[index].id.$id, data[index].name);
 		    	});
 		    	tr.append($('<td>').append(a));
 		    	if (cnt % 4 == 0)
@@ -70,7 +79,57 @@ function loadIndex(idx)
 
 }
 
-function loadAsset(id)
+function loadAsset(id, name)
 {
-	alert(id);
+	$('#assets-table').empty();
+	$('#assets-table').addClass('hidden');	
+	$('#asset-info').removeClass('hidden');	
+	$('#select-index-h1').text(name);
+	console.log(name);
+	// wikipedia 
+	
+	var req = {"id": "loadWikipedia", "data": id};
+	$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(data) {
+			var content = data.data;
+			console.log(data.url);
+			if (content.length > 0) {
+				$('#wiki-data').html(content);
+				var a = $('<a>').attr('href', data.url).attr('target', "_blank");
+				a.append("Continue reading on wikipedia");
+				
+				$('#wiki-data').append(a);
+			}
+			else
+				$('#wiki-data').html('not found');
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+
+	// yahoo 
+
+	var req = {"id": "loadYahooFinance", "data": id};
+	$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(res) {
+			console.log(res);
+			$('#yahoo-data').html(res.data.symbol);
+			
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+
 }
