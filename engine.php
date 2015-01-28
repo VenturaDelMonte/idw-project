@@ -25,11 +25,11 @@
 		$query = new stdObject();
 		$query->index = new MongoRegex('/'.utf8_encode("$data").'/i');
 		$ret = [];
-		$cursor = $assets->find($query, ['name' => 1]);
+		$cursor = $assets->find($query);
 
 		foreach ($cursor as $obj)
 		{
-			$ret[] = $obj['name'];
+			$ret[] = new stdObject(['name' => $obj['name'], 'id' => $obj['_id']]);
 		}
 		return $ret;
 

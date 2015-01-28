@@ -44,11 +44,16 @@ function loadIndex(idx)
 		dataType: "json",
 		success: function(data) {
 			var tr = $('<tr>');
-			var cnt = -2;
+			var cnt = -3;
 			$.each(data, function(index) {
 		    	// console.log(data[index]);
-		    	tr.append($('<td>').append($('<span>').append(data[index])));
-		    	if (cnt % 3 == 0)
+		    	var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
+		    	a.click(function (e){
+		    		e.preventDefault();
+		    		loadAsset(data[index].id.$id);
+		    	});
+		    	tr.append($('<td>').append(a));
+		    	if (cnt % 4 == 0)
 		    	{
 		    		$('#assets-table').append(tr);
 		    		tr = $('<tr>');
@@ -63,4 +68,9 @@ function loadIndex(idx)
 		}
 	});
 
+}
+
+function loadAsset(id)
+{
+	alert(id);
 }
