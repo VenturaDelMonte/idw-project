@@ -40,7 +40,26 @@
 		return new stdObject(['data' => $ret, 'url' => $url]);
 	}
 
+	function loadGoogleTrends($data)
+	{
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$query = new stdObject();
+		$query->_id = new MongoId($data);
+		$cursor = $assets->find($query);
 
+		foreach ($cursor as $asset) 
+		{ 
+			$what = $asset['sym'];	
+		}
+
+		$xpath=scrapePage("http://www.bigcharts.com/quickchart/quickchart.asp?symb=$what&insttype=Stock");
+		$res = $xpath -> query("//*[@class=\"padded vatop\"]/img");
+    	return($res->item(0)->getAttribute("src"));
+
+		
+	}
 	function loadYahooFinance($data)
 	{
 		$mongo = new MongoHelper();
