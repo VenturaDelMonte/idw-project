@@ -71,8 +71,22 @@
 
     	curl_close($session);
 
+    	$ret = [];
 
-    	return new stdObject(['data' => $json->query->results->quote]);
+    	foreach ($json->query->results->quote as $k => $v)
+    	{
+    		if (!is_null($v))
+    			$ret[$k] = $v;
+    	}
+
+
+    	return new stdObject(['data' => $ret]);
+	}
+
+
+	function loadGoogleTrends($data)
+	{
+
 	}
 
 
