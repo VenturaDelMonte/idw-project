@@ -102,6 +102,33 @@
     	return new stdObject(['data' => $ret]);
 	}
 
+	function loadGoogleNews($data)
+	{
+
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$query = new stdObject();
+		$query->_id = new MongoId($data);
+		$cursor = $assets->find($query);
+
+		foreach ($cursor as $asset) 
+		{ 
+			$what = $asset['sym'];	
+		}
+
+		$query = "https://www.google.com/finance/company_news?q=$what";
+
+		$xpath = scrapePage($query);
+		$res = $xpath->query('//*[@id="gf-viewc"]/div/div[2]/div[2]/div');
+		$ret = "";
+		foreach ($res as $a)
+		{
+			$ret .= nodeContent($a, true);
+		}
+		return $ret;
+	}
+
 
 	function loadIndices($data)
 	{
