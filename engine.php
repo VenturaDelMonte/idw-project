@@ -37,7 +37,7 @@
 		} 
 		$ret = preg_replace("/href=\"(.*)\"/iU", " ", $ret);
 		$ret = preg_replace("/<a/iU", "<span", $ret);
-		return new stdObject(['data' => $ret, 'url' => $what]);
+		return new stdObject(['data' => $ret, 'url' => $url]);
 	}
 
 	function loadTrends($data)
