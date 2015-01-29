@@ -8,7 +8,8 @@ function cleanAssetInfo()
 {
 	$('#asset-info').addClass('hidden');
 	$('#wiki-data').empty();
-	$('#yahoo-data').empty();
+	$('#yahoo-table').empty();
+
 }
 
 function loadIndices()
@@ -82,6 +83,7 @@ function loadIndex(idx)
 function loadAsset(id, name)
 {
 	$('#assets-table').empty();
+	$('#yahoo-table').empty();
 	$('#assets-table').addClass('hidden');	
 	$('#asset-info').removeClass('hidden');	
 	$('#select-index-h1').text(name);
@@ -123,8 +125,42 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
-			console.log(res);
-			$('#yahoo-data').html(res.data.symbol);
+			
+			var table = $('#yahoo-table');
+			table.removeClass('hidden');
+			$.each(res.data, function(key) {
+				var tr = $('<tr>');
+				var td1 = $('<td>');
+				var td2 = $('<td>');
+				//console.log(key);
+				td1.append(key);
+				td2.append(res.data[key]);
+				tr.append(td1);
+				tr.append(td2);
+				table.append(tr);
+			});
+			
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+
+
+	// yahoo 
+
+	var req = {"id": "loadGoogleNews", "data": id};
+	$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(res) {
+			
+			//console.log(res);
+
+			$('#google-news').html(res);
 			
 		},
 		failure: function(errMsg) {
