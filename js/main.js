@@ -132,13 +132,35 @@ function loadAsset(id, name)
 				var tr = $('<tr>');
 				var td1 = $('<td>');
 				var td2 = $('<td>');
-				console.log(key);
+				//console.log(key);
 				td1.append(key);
 				td2.append(res.data[key]);
 				tr.append(td1);
 				tr.append(td2);
 				table.append(tr);
 			});
+			
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+
+
+	// yahoo 
+
+	var req = {"id": "loadGoogleNews", "data": id};
+	$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(res) {
+			
+			//console.log(res);
+
+			$('#google-news').html(res);
 			
 		},
 		failure: function(errMsg) {
