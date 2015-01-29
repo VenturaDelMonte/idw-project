@@ -40,7 +40,7 @@
 		return new stdObject(['data' => $ret, 'url' => $url]);
 	}
 
-	function loadGoogleTrends($data)
+	function loadTrends($data)
 	{
 		$mongo = new MongoHelper();
 		$db = $mongo->idw;
@@ -57,8 +57,6 @@
 		$xpath=scrapePage("http://www.bigcharts.com/quickchart/quickchart.asp?symb=$what&insttype=Stock");
 		$res = $xpath -> query("//*[@class=\"padded vatop\"]/img");
     	return($res->item(0)->getAttribute("src"));
-
-		
 	}
 	function loadYahooFinance($data)
 	{
