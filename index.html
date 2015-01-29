@@ -14,6 +14,7 @@
 
 		<link rel="stylesheet" href="css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timeline.css">
 
 		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 		<script src="js/vendor/jquery-1.11.1.min.js"></script>
@@ -75,7 +76,7 @@
           </div>
           	<div id="asset-info" class="row hidden">
                 <div class="col-lg-8">
-                    <div class="panel panel-info">
+                    <div id="yahoo-panel" class="panel panel-info hidden">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Yahoo Finance
                            
@@ -91,7 +92,7 @@
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
-                    <div class="panel panel-primary">
+                    <div id="trends-panel" class="panel panel-primary hidden">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Trends
                             
@@ -103,21 +104,23 @@
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                    <div class="panel panel-danger">
+                    <div id="news-panel" class="panel panel-danger hidden">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> News
                             
                         </div>
                         <!-- /.panel-heading -->
                         <div id="google-news" class="panel-body">
-                            
+                            <ul id="news-timeline" class="timeline">
+
+                            </ul>
                         </div>
                         <!-- /.panel-body -->
                     </div>
                 </div>
                     <!-- /.panel -->
                 <div class="col-lg-4">
-                    <div class="panel panel-warning">
+                    <div id="wikipedia-panel" class="panel panel-warning hidden">
                         <div class="panel-heading">
                             <i class="fa fa-bar-chart-o fa-fw"></i> Wikipedia
                         </div>

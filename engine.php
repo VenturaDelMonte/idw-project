@@ -118,11 +118,21 @@
 		$query = "https://www.google.com/finance/company_news?q=$what";
 
 		$xpath = scrapePage($query);
-		$res = $xpath->query('//*[@id="gf-viewc"]/div/div[2]/div[2]/div');
+/*		$res = $xpath->query('//*[@id="gf-viewc"]/div/div[2]/div[2]/div');
 		$ret = "";
 		foreach ($res as $a)
 		{
 			$ret .= nodeContent($a, true);
+		}
+		return $ret;
+*/
+
+		$res = $xpath->query('//*[@id="news-main"]/div');
+		$ret = [];
+		foreach ($res as $a)
+		{
+			$ret[] = nodeContent($a, true);
+			
 		}
 		return $ret;
 	}

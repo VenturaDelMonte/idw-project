@@ -9,7 +9,10 @@ function cleanAssetInfo()
 	$('#asset-info').addClass('hidden');
 	$('#wiki-data').empty();
 	$('#yahoo-table').empty();
-
+	$('#wikipedia-panel').addClass('hidden');
+	$('#trends-panel').addClass('hidden');
+	$('#yahoo-panel').addClass('hidden');
+	$('#news-panel').addClass('hidden');
 }
 
 function loadIndices()
@@ -87,6 +90,11 @@ function loadAsset(id, name)
 	$('#assets-table').addClass('hidden');	
 	$('#asset-info').removeClass('hidden');	
 	$('#select-index-h1').text(name);
+	$('#wikipedia-panel').addClass('hidden');
+	$('#trends-panel').addClass('hidden');
+	$('#yahoo-panel').addClass('hidden');
+	$('#news-panel').addClass('hidden');
+
 	console.log(name);
 	// wikipedia 
 	
@@ -99,8 +107,9 @@ function loadAsset(id, name)
 		dataType: "json",
 		success: function(data) {
 			var content = data.data;
-			console.log(data.url);
+			//console.log(data.url);
 			if (content.length > 0) {
+				$('#wikipedia-panel').removeClass('hidden');
 				$('#wiki-data').html(content);
 				var a = $('<a>').attr('href', data.url).attr('target', "_blank");
 				a.append("Continue reading on wikipedia");
@@ -125,21 +134,22 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
-			
-			var table = $('#yahoo-table');
-			table.removeClass('hidden');
-			$.each(res.data, function(key) {
-				var tr = $('<tr>');
-				var td1 = $('<td>');
-				var td2 = $('<td>');
-				//console.log(key);
-				td1.append(key);
-				td2.append(res.data[key]);
-				tr.append(td1);
-				tr.append(td2);
-				table.append(tr);
-			});
-			
+			if (!$.isArray(res.data)){
+				$('#yahoo-panel').removeClass("hidden");
+				var table = $('#yahoo-table');
+				table.removeClass('hidden');
+				$.each(res.data, function(key) {
+					var tr = $('<tr>');
+					var td1 = $('<td>');
+					var td2 = $('<td>');
+					//console.log(key);
+					td1.append(key);
+					td2.append(res.data[key]);
+					tr.append(td1);
+					tr.append(td2);
+					table.append(tr);
+				});
+			 }
 		},
 		failure: function(errMsg) {
 			alert(errMsg);
@@ -157,10 +167,25 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
-			
-			//console.log(res);
-
-			$('#google-news').html(res);
+			if(res.length >0)
+			{	
+				$('#news-panel').removeClass("hidden");
+				var timeline = $("#news-timeline");
+				$.each(res, function(index){
+					var li = $("<li>");
+					if(index%2==1)
+						li.addClass("timeline-inverted");
+					//li.html("<div class=\"timeline-badge\"><i class=\"fa fa-check\"></i></div>");
+					var panel = $("<div>").addClass("timeline-panel");
+					
+					var body = $("<div>").addClass("timeline-body").append(res[index]);
+					
+					panel.append(body);
+					li.append(panel);
+					timeline.append(li);
+				});
+			}
+			//$('#google-news').html(res);
 			
 		},
 		failure: function(errMsg) {
@@ -178,9 +203,12 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
-			$("#trends-data").empty();
-			$("#trends-data").append($("<img>").attr("src", res));
-			
+			if(res.length>0)
+			{
+				$('#trends-panel').removeClass('hidden');
+				$("#trends-data").empty();
+				$("#trends-data").append($("<img>").attr("src", res));
+			}
 		},
 		failure: function(errMsg) {
 			alert(errMsg);
