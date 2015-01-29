@@ -14,8 +14,8 @@
 
 		foreach ($cursor as $asset) 
 		{ 
-			$what = str_replace(["...", "\n", "S.P.A", ",Inc"], "", $asset['name']);
-			
+			$what = str_replace([".", "\n", "_", "S.P.A", ",Inc"], " ", $asset['name']);
+			$what = trim($what);
 		}
 		
 
@@ -37,7 +37,7 @@
 		} 
 		$ret = preg_replace("/href=\"(.*)\"/iU", " ", $ret);
 		$ret = preg_replace("/<a/iU", "<span", $ret);
-		return new stdObject(['data' => $ret, 'url' => $url]);
+		return new stdObject(['data' => $ret, 'url' => $what]);
 	}
 
 	function loadTrends($data)
