@@ -90,6 +90,11 @@ function loadAsset(id, name)
 	$('#assets-table').addClass('hidden');	
 	$('#asset-info').removeClass('hidden');	
 	$('#select-index-h1').text(name);
+	$('#wikipedia-panel').addClass('hidden');
+	$('#trends-panel').addClass('hidden');
+	$('#yahoo-panel').addClass('hidden');
+	$('#news-panel').addClass('hidden');
+
 	console.log(name);
 	// wikipedia 
 	
@@ -104,6 +109,7 @@ function loadAsset(id, name)
 			var content = data.data;
 			//console.log(data.url);
 			if (content.length > 0) {
+				$('#wikipedia-panel').removeClass('hidden');
 				$('#wiki-data').html(content);
 				var a = $('<a>').attr('href', data.url).attr('target', "_blank");
 				a.append("Continue reading on wikipedia");
