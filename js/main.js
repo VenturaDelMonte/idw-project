@@ -168,4 +168,22 @@ function loadAsset(id, name)
 		}
 	});
 
+	//Google Trends
+
+	var req = {"id": "loadGoogleTrends", "data": id};
+	$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(res) {
+			$("#trends-data").empty();
+			$("#trends-data").append($("<img>").attr("src", res));
+			
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
 }
