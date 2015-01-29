@@ -171,7 +171,7 @@ function loadAsset(id, name)
 
 	//Google Trends
 
-	var req = {"id": "loadGoogleTrends", "data": id};
+	var req = {"id": "loadTrends", "data": id};
 	$.ajax({
 		type: "POST",
 		url: 'engine.php',
