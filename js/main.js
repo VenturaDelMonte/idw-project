@@ -9,7 +9,8 @@ function cleanAssetInfo()
 	$('#asset-info').addClass('hidden');
 	$('#wiki-data').empty();
 	$('#yahoo-table').empty();
-
+	$("#trends-data").empty();
+	$('#google-news').empty();
 }
 
 function loadIndices()
@@ -99,12 +100,12 @@ function loadAsset(id, name)
 		dataType: "json",
 		success: function(data) {
 			var content = data.data;
-			console.log(data.url);
+			console.log("-> " + data.url);
 			if (content.length > 0) {
 				$('#wiki-data').html(content);
 				var a = $('<a>').attr('href', data.url).attr('target', "_blank");
 				a.append("Continue reading on wikipedia");
-				
+				console.log("-> " + data.url);
 				$('#wiki-data').append(a);
 			}
 			else
@@ -178,7 +179,7 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
-			$("#trends-data").empty();
+			
 			$("#trends-data").append($("<img>").attr("src", res));
 			
 		},
