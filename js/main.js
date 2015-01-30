@@ -14,6 +14,7 @@ function cleanAssetInfo()
 	$('#trends-panel').addClass('hidden');
 	$('#yahoo-panel').addClass('hidden');
 	$('#news-panel').addClass('hidden');
+	$("#news-timeline").empty();
 }
 
 function loadIndices()

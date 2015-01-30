@@ -1,5 +1,5 @@
 <?php
-	header('Content-type: application/json');
+	header('Content-type: application/json; charset=utf-8');
 	require_once('utils.php');
 	require_once('mongo_helper.php');
 
@@ -24,7 +24,7 @@
 		$session = curl_init($query_url);
     	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
-    	$json = curl_exec($session);
+    	$json = curl_exec_utf8($session);
     	curl_close($session);
 
     	$url = json_decode($json)[3][0];
