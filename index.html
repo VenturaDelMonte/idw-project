@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/timeline.css">
+    <!--<link rel="stylesheet" href="css/font-awesome.min.css"  type="text/css">-->
 
     <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="js/vendor/jquery-1.11.1.min.js"></script>
@@ -39,6 +40,16 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul id="indices" class="nav nav-sidebar">
+            <li class="sidebar-search">
+              <div class="input-group custom-search-form">
+                <input type="text" id="search" class="form-control" placeholder="Search...">
+                  <span class="input-group-btn">
+                    <button id="button" class="btn btn-default" type="button">
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+              </div>
+            </li>
           </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -76,43 +87,37 @@
           </div>
             <div id="asset-info" class="row hidden">
                 <div class="col-lg-8">
-                    <div id="yahoo-panel" class="panel panel-info hidden">
+                    <div id="yahoo-panel" class="panel panel-red hidden">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Yahoo Finance
-                           
+                          <h1 class ="panel-title"> Yahoo Finance </h1>
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                           <div class="bodycontainer scrollable">
                               <table id="yahoo-table" class="table table-striped hidden table-condensed table-scrollable ">
-              
-                      </table>
-                    </div>
-                  </div>
+                              </table>
+                          </div>
+                        </div>
                         <!-- /.panel-body -->
                     </div>
                     <!-- /.panel -->
                     <div id="trends-panel" class="panel panel-primary hidden">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Trends
-                            
+                          <h1 class ="panel-title"> Trends </h1>
                         </div>
                         <!-- /.panel-heading -->
                         <div id ="trends-data" class="panel-body">
-                            
                             <!-- /.row -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
-                    <div id="news-panel" class="panel panel-danger hidden">
+                    <div id="news-panel" class="panel panel-green hidden">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> News
-                            
+                          <h1 class ="panel-title"> News </h1>
                         </div>
                         <!-- /.panel-heading -->
                         <div id="google-news" class="panel-body">
                             <ul id="news-timeline" class="timeline">
-
                             </ul>
                         </div>
                         <!-- /.panel-body -->
@@ -120,12 +125,11 @@
                 </div>
                     <!-- /.panel -->
                 <div class="col-lg-4">
-                    <div id="wikipedia-panel" class="panel panel-warning hidden">
+                    <div id="wikipedia-panel" class="panel panel-yellow hidden">
                         <div class="panel-heading">
-                            <i class="fa fa-bar-chart-o fa-fw"></i> Wikipedia
+                          <h1 class ="panel-title"> Wikipedia </h1>
                         </div>
                         <div id="wiki-data" class="panel-body">
-                           
                         </div>
                         <!-- /.panel-body -->
                     </div>

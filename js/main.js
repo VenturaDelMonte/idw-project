@@ -2,6 +2,7 @@
 window.onload = function(ev)
 {
 	loadIndices();
+	search();
 }
 
 function cleanAssetInfo()
@@ -18,6 +19,7 @@ function cleanAssetInfo()
 function loadIndices()
 {
 	var req = {"id": "loadIndices"};
+	
 	$.ajax({
 		type: "POST",
 		url: 'engine.php',
@@ -26,12 +28,14 @@ function loadIndices()
 		dataType: "json",
 		success: function(data) {
 			$.each(data, function(index) {
-		    	// console.log(data[index]);
+		    	//console.log(data[index]);
 		    	var a = $('<a>').attr('href', data[index]._id.$id).append($('<span>').append(data[index].name));
+
 				a.click(function(e) {
 					e.preventDefault();
-					cleanAssetInfo();	
+					cleanAssetInfo();
 					loadIndex(data[index]._id.$id);
+					var s = $('#select-index-h1').text(a.text());
 				});
 				$('#indices').append($('<li>').append(a))
 			});
@@ -45,10 +49,11 @@ function loadIndices()
 function loadIndex(idx)
 {
 	//$('#select-index-h1').addClass('hidden');
-	$('#select-index-h1').text("");
+	//$('#select-index-h1').text("");
 	$('#assets-table').removeClass('hidden');
 	$('#assets-table').empty();
 	var req = {"id": "loadAssets", "data": idx};
+	var col = ["active", "success", "warning", "danger"];	
 	$.ajax({
 		type: "POST",
 		url: 'engine.php',
@@ -57,7 +62,10 @@ function loadIndex(idx)
 		dataType: "json",
 		success: function(data) {
 			var tr = $('<tr>');
+
 			var cnt = -3;
+			var i = 0;
+
 			$.each(data, function(index) {
 		    	// console.log(data[index]);
 		    	var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
@@ -70,10 +78,12 @@ function loadIndex(idx)
 		    	{
 		    		$('#assets-table').append(tr);
 		    		tr = $('<tr>');
-
+		    		tr.addClass(col[i]);
 		    	}
 		    	cnt++;
-		    	
+		    	i++;
+		    	if(i==5)
+		    		i=0;
 			});
 		},
 		failure: function(errMsg) {
@@ -89,7 +99,8 @@ function loadAsset(id, name)
 	$('#yahoo-table').empty();
 	$('#assets-table').addClass('hidden');	
 	$('#asset-info').removeClass('hidden');	
-	$('#select-index-h1').text(name);
+	var small = $('<small>').append((' > ').concat(name));
+	$('#select-index-h1').append(small);
 	$('#wikipedia-panel').addClass('hidden');
 	$('#trends-panel').addClass('hidden');
 	$('#yahoo-panel').addClass('hidden');
@@ -113,8 +124,10 @@ function loadAsset(id, name)
 				$('#wiki-data').html(content);
 				var a = $('<a>').attr('href', data.url).attr('target', "_blank");
 				a.append("Continue reading on wikipedia");
-				
+				var i = $('<i>').addClass('fa fa-arrow-circle-right');
+				a.append(i);
 				$('#wiki-data').append(a);
+
 			}
 			else
 				$('#wiki-data').html('not found');
@@ -214,4 +227,19 @@ function loadAsset(id, name)
 			alert(errMsg);
 		}
 	});
+}
+
+function search(data)
+{
+	var req = {"data": "search", "data": data};
+	var btn = $('#button');
+	
+
+			btn.click(function (e){
+				e.preventDefault();
+				var inp = $('#search').val();
+				//console.log(inp);
+				
+			});
+		
 }

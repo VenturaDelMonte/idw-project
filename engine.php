@@ -61,7 +61,7 @@
 	function loadYahooFinance($data)
 	{
 		$mongo = new MongoHelper();
-		$db = $mongo->idw;
+		$db = $moninpgo->idw;
 		$assets = $db->assets;
 		$query = new stdObject();
 		$query->_id = new MongoId($data);
@@ -170,11 +170,13 @@
 
 	}
 
+	
 	$json = file_get_contents('php://input');
 	$obj = json_decode($json);
 	
 	$fn = $obj->id;
 
 	@print(json_encode(call_user_func($fn, $obj->data)));
+
 
 ?>
