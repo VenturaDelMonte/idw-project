@@ -1,10 +1,78 @@
 
 window.onload = function(ev)
 {
+	
+	//var header = $('#header');
+	//var h1 = $('<h1>').attr('id', 'select-index-h1').addClass("page-header").html("Select an index on the left");
+	//header.append(h1);
 	loadIndices();
-	search();
-}
+	
+	$("#search").keydown(function(e){
+		if($('#search').val().length<1)
+			return;
+		var req = {"id" : "search", "data" : $('#search').val()};
+		var col = ["active", "success", "warning", "danger"];	
+		cleanAssetInfo();
+		$('#select-index-h1').empty();
+		$.ajax({
+		type: "POST",
+		url: 'engine.php',
+		data: JSON.stringify(req),
+		contentType: "application/json; charset=utf-8",
+		dataType: "json",
+		success: function(data) {
+			//console.log(data);
+			if ($('#assets-table').hasClass('hidden'))
+				$('#assets-table').removeClass('hidden');
+			$('#assets-table').empty();
 
+			var tr = $('<tr>');
+
+			var cnt = -3;
+			var i = 0;
+
+			$.each(data, function(index) {
+		    	console.log(data[index]);
+		    	var incr = Math.min(4, data.length);
+		    	var a = $('<a>').attr('href', data[index]._id.$id).append(data[index].market + ": " + data[index].name);
+		    	var an = $('<a>');
+
+		    	a.click(function (e){
+		    		e.preventDefault();
+		    		$('#select-index-h1').empty();
+		    		an.attr('href',data[index].market_id.$id);
+		    		an.append(data[index].market);
+		    		$('#select-index-h1').append(an);
+		    		an.click(function(e) {
+						e.preventDefault();
+						cleanAssetInfo();
+						loadIndex(data[index].market_id.$id);
+						$('#select-index-h1').empty();
+						$('#select-index-h1').text(data[index].market);
+					});
+		    		console.log(an);
+		    		loadAsset(data[index]._id.$id, data[index].name);
+		    	});
+		    	tr.append($('<td>').append(a));
+		    	if (cnt % incr == 0)
+		    	{
+		    		$('#assets-table').append(tr);
+		    		tr = $('<tr>');
+		    		tr.addClass(col[i]);
+		    	}
+		    	cnt++;
+		    	i++;
+		    	if(i==5)
+		    		i=0;
+		    });
+
+		},
+		failure: function(errMsg) {
+			alert(errMsg);
+		}
+	});
+	});
+}
 function cleanAssetInfo()
 {
 	$('#asset-info').addClass('hidden');
@@ -15,6 +83,7 @@ function cleanAssetInfo()
 	$('#yahoo-panel').addClass('hidden');
 	$('#news-panel').addClass('hidden');
 	$("#news-timeline").empty();
+
 }
 
 function loadIndices()
@@ -36,7 +105,8 @@ function loadIndices()
 					e.preventDefault();
 					cleanAssetInfo();
 					loadIndex(data[index]._id.$id);
-					var s = $('#select-index-h1').text(a.text());
+					$('#select-index-h1').empty();
+					$('#select-index-h1').text(a.text());
 				});
 				$('#indices').append($('<li>').append(a))
 			});

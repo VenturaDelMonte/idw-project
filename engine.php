@@ -61,7 +61,7 @@
 	function loadYahooFinance($data)
 	{
 		$mongo = new MongoHelper();
-		$db = $moninpgo->idw;
+		$db = $mongo->idw;
 		$assets = $db->assets;
 		$query = new stdObject();
 		$query->_id = new MongoId($data);
@@ -168,6 +168,31 @@
 		}
 		return $ret;
 
+	}
+
+	function search($data)
+	{
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$indices = $db->indices;
+		$ret = [];
+		$cursor = $assets->find(new stdObject(["name" => new MongoRegex("/^$data/i")]));
+		foreach ($cursor as $obj) 
+		{
+			//$ret[] = $obj;
+			$tmp = new stdObject();
+			$tmp->name = $obj["name"];
+			$tmp->_id = $obj["_id"];
+			$cr = $indices->find(new stdObject(["_id" => new MongoId($obj["index"])]));
+			foreach ($cr as $v) 
+			{
+				$tmp->market = $v["name"];
+				$tmp->market_id =$v["_id"];
+			}
+			$ret[] = $tmp;
+		}
+		return ($ret);
 	}
 
 	
