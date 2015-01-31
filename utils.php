@@ -29,7 +29,7 @@ function nodeContent($n, $outer=false)
     return $h;
 }
 
-function scrapePage($source)
+function scrapePage($source, $tidy = false)
 {
 	$curl = curl_init();
 	$doc = new DOMDocument('1.0', 'utf-8');
@@ -53,10 +53,12 @@ function scrapePage($source)
     /*CURLOPT_TIMEOUT: The maximum number of seconds to allow cURL functions to execute. */
 	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 	$result = curl_exec_utf8($curl);
-	/*Closes a cURL session and frees all resources.*/
+	
 	curl_close($curl);
-
-	$clean = $tidy->repairString($result);
+	if ($tidy == true)
+		$clean = $tidy->repairString($result);
+	else
+		$clean = $result;//$tidy->repairString($result, null, "UTF-8");
 	$doc->strictErrorChecking = false;
     /*Enables recovery mode, i.e. trying to parse non-well formed documents. */
 	$doc->recover = true;
