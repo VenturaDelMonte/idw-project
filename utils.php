@@ -33,28 +33,42 @@ function scrapePage($source)
 {
 	$curl = curl_init();
 	$doc = new DOMDocument('1.0', 'utf-8');
+    /*Tidy is a binding for the Tidy HTML clean and repair utility which allows you to 
+    not only clean and otherwise manipulate HTML documents, 
+    but also traverse the document tree. */
 	$tidy = new tidy();
 
+    /*CURLOPT_URL: The URL to fetch*/
 	curl_setopt($curl, CURLOPT_URL, $source);
+    /*CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the return value 
+    of curl_exec() instead of outputting it out directly. */
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
+	/*CURLOPT_USERAGENT: header to be used in a HTTP request*/
+    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
 	curl_setopt($curl, CURLOPT_FAILONERROR, true);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($curl, CURLOPT_AUTOREFERER, true);
+    /*CURLOPT_HEADER: TRUE to include the header in the output.*/
 	curl_setopt($curl, CURLOPT_HEADER, false);
+    /*CURLOPT_TIMEOUT: The maximum number of seconds to allow cURL functions to execute. */
 	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 	$result = curl_exec_utf8($curl);
-	
+	/*Closes a cURL session and frees all resources.*/
 	curl_close($curl);
 
-	$clean = $result;//$tidy->repairString($result, null, "UTF-8");
+	$clean = $tidy->repairString($result);
 	$doc->strictErrorChecking = false;
+    /*Enables recovery mode, i.e. trying to parse non-well formed documents. */
 	$doc->recover = true;
+    /*Load HTML from a string */
 	$doc->loadHTML($clean);
 
+    /*return new DOMXPath class*/
 	return new DOMXPath($doc);
 }
 
+/*Convert curl_exec output to UTF8
+see: http://stackoverflow.com/questions/2510868/php-convert-curl-exec-output-to-utf8*/
 function curl_exec_utf8($ch)
 {
     $data = curl_exec($ch);
