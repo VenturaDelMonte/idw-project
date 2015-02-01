@@ -14,7 +14,7 @@
 
 		foreach ($cursor as $asset) 
 		{ 
-			$what = str_replace([".", "\n", "_", "S.P.A", ",Inc"], " ", $asset['name']);
+			$what = str_replace([".", ",", "\n", "_", "S.P.A", ",Inc", ", Inc"], " ", $asset['name']);
 			$what = trim($what);
 		}
 		
