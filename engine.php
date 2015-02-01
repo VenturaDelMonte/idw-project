@@ -58,6 +58,7 @@
 		$res = $xpath -> query("//*[@class=\"padded vatop\"]/img");
     	return($res->item(0)->getAttribute("src"));
 	}
+
 	function loadYahooFinance($data)
 	{
 		$mongo = new MongoHelper();
@@ -77,7 +78,7 @@
 		//									. "and xpath='//*[@id=\"yfi_investing_content\"]/div[2]|//*[@id=\"yfi_quote_summary_data\"]'", $what));
 
 
-		$query_url .= urlencode('select * from yahoo.finance.quotes where symbol in ("'.$what.'")');//urlencode("select * from yahoo.finance.quote where symbol in (\"$what\")");
+		$query_url .= urlencode("select * from yahoo.finance.quotes where symbol = \"$what\"");//urlencode("select * from yahoo.finance.quote where symbol in (\"$what\")");
 
 		$query_url .= "&format=json&env=store://datatables.org/alltableswithkeys";
 
@@ -96,8 +97,44 @@
     			$ret[$k] = $v;
     	}
 
-
     	return new stdObject(['data' => $ret]);
+	}
+
+
+	function loadYahooHistoricalData($data)
+	{
+		$mongo = new MongoHelper();
+		$db = $mongo->idw;
+		$assets = $db->assets;
+		$query = new stdObject();
+		$query->_id = new MongoId($data->name);
+		$cursor = $assets->find($query);
+
+		foreach ($cursor as $asset) 
+		{ 
+			$what = $asset['sym'];	
+		}
+
+		$query_url = "http://query.yahooapis.com/v1/public/yql?q=";
+		//$query_url .= urlencode(sprintf("select * from html where url='http://finance.yahoo.com/q?s=%s' " 
+		//									. "and xpath='//*[@id=\"yfi_investing_content\"]/div[2]|//*[@id=\"yfi_quote_summary_data\"]'", $what));
+
+		$start_data = "2009-09-11";
+		$end_data = "2010-03-10";
+
+		$query_url .= urlencode("select * from yahoo.finance.historicaldata where symbol = \"$what\" and startDate = \"$start_data\" and endDate = \"$end_data\"");
+
+		$query_url .= "&format=json&env=store://datatables.org/alltableswithkeys";
+
+		$session = curl_init($query_url);
+    	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+
+    	$json = json_decode(curl_exec($session));
+
+    	curl_close($session);
+
+
+    	return new stdObject([$json->query->results->quote]);
 	}
 
 	function loadGoogleNews($data)
@@ -199,9 +236,10 @@
 	$json = file_get_contents('php://input');
 	$obj = json_decode($json);
 	
-	$fn = $obj->id;
 
-	@print(json_encode(call_user_func($fn, $obj->data)));
+	// check if $obj->id is a valid function -- SANITIZE !!!!
+
+	@print(json_encode(call_user_func($obj->id, $obj->data)));
 
 
 ?>

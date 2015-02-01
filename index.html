@@ -19,6 +19,14 @@
 
     <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="js/vendor/jquery-1.11.1.min.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+	
+	<link rel="stylesheet" href="css/datepicker3.css">
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/locale/bootstrap-datepicker.en-GB.js"></script>
     <script src="js/main.js"></script>
   </head>
   <body>
@@ -90,14 +98,62 @@
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                          <div class="bodycontainer scrollable">
-                              <table id="yahoo-table" class="table table-striped hidden table-condensed table-scrollable ">
-              
-                      </table>
-                    </div>
-                  </div>
+                            <div class="bodycontainer scrollable">
+                                <table id="yahoo-table" class="table table-striped hidden table-condensed table-scrollable ">
+
+                                </table>
+                            </div>
+                           
+                        </div>
                         <!-- /.panel-body -->
                     </div>
+
+                    <div id="yahoo-historical-panel" class="panel panel-red hidden">
+                        <div class="panel-heading">
+                          <h1 class ="panel-title"> Yahoo Finance Historical Data </h1>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">  
+                        	<div id="data-chooser" class="row form-horizontal">
+                        		<div class="col-md-5 span5">
+									<div class="input-daterange input-group" id="datepicker">
+										<input type="text" class="input-sm form-control" name="start" />
+										<span class="input-group-addon">to</span>
+										<input type="text" class="input-sm form-control" name="end" />
+										
+									</div>
+                        		</div>   
+                        		<div class="col-md-7 span7">
+									<button class="btn btn-default" type="button">Go!</button>
+								</div>
+							</div>
+                            <div class="row">
+                                <div class="table-responsive bodycontainer scrollable">
+                                    <table class="table table-bordered table-hover table-striped table-condensed table-scrollable">
+                                        <thead>
+                                            <tr id="hist-headers">
+                                            	
+                                            </tr>
+                                        </thead>
+                                        <tbody id ="historical-table">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.col-lg-4 (nested) -->
+                        	</hr>
+                            <div class="row voffset5">
+                                <div id="yahoo-historical-chart"></div>
+                            </div>
+                            <!-- /.col-lg-8 (nested) -->
+                        
+                       
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+
                     <!-- /.panel -->
                     <div id="trends-panel" class="panel panel-primary hidden">
                         <div class="panel-heading">
