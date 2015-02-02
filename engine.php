@@ -9,6 +9,8 @@
 		$db = $mongo->idw;
 		$assets = $db->assets;
 		$query = new stdObject();
+		/*Creates a new id for database objects
+		$data is the string used as the id*/
 		$query->_id = new MongoId($data);
 		$cursor = $assets->find($query);
 
@@ -18,12 +20,17 @@
 			$what = trim($what);
 		}
 		
-
+		/*Get pages whose name matches a given string. When limit is reached, results are ordered 
+		by number of incoming links. See: http://www.mediawiki.org/wiki/API%3aOpensearch*/
 		$query_url = "http://en.wikipedia.org/w/api.php?action=opensearch&search=" . urlencode($what);
 
+		/* Initialize a cURL session*/
 		$session = curl_init($query_url);
+		/*CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the 
+		return value of curl_exec() instead of outputting it out directly. */
     	curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
 
+    	/*Convert curl_exec output to UTF8*/
     	$json = curl_exec_utf8($session);
     	curl_close($session);
 
@@ -35,6 +42,7 @@
 		{
 			$ret .= nodeContent($node, true);
 		} 
+		/*Perform a regular expression search and replace*/
 		$ret = preg_replace("/href=\"(.*)\"/iU", " ", $ret);
 		$ret = preg_replace("/<a/iU", "<span", $ret);
 		return new stdObject(['data' => $ret, 'url' => $url]);
@@ -72,6 +80,7 @@
 			$what = $asset['sym'];	
 		}
 
+		/*For YQL see: https://developer.yahoo.com/yql/guide/running-chapt.html*/
 		$query_url = "http://query.yahooapis.com/v1/public/yql?q=";
 		//$query_url .= urlencode(sprintf("select * from html where url='http://finance.yahoo.com/q?s=%s' " 
 		//									. "and xpath='//*[@id=\"yfi_investing_content\"]/div[2]|//*[@id=\"yfi_quote_summary_data\"]'", $what));

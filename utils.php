@@ -47,6 +47,8 @@ function scrapePage($source, $tidy = false)
     curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
 	curl_setopt($curl, CURLOPT_FAILONERROR, true);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    /*CURLOPT_AUTOREFERER: TRUE to automatically set the Referer: 
+    field in requests where it follows a Location: redirect. */
 	curl_setopt($curl, CURLOPT_AUTOREFERER, true);
     /*CURLOPT_HEADER: TRUE to include the header in the output.*/
 	curl_setopt($curl, CURLOPT_HEADER, false);
@@ -65,7 +67,6 @@ function scrapePage($source, $tidy = false)
     /*Load HTML from a string */
 	$doc->loadHTML($clean);
 
-    /*return new DOMXPath class*/
 	return new DOMXPath($doc);
 }
 
