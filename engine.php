@@ -119,8 +119,8 @@
 		//$query_url .= urlencode(sprintf("select * from html where url='http://finance.yahoo.com/q?s=%s' " 
 		//									. "and xpath='//*[@id=\"yfi_investing_content\"]/div[2]|//*[@id=\"yfi_quote_summary_data\"]'", $what));
 
-		$start_data = "2009-09-11";
-		$end_data = "2010-03-10";
+		$start_data = $data->startDate; //"2009-09-11";
+		$end_data = $data->endDate; //"2010-03-10";
 
 		$query_url .= urlencode("select * from yahoo.finance.historicaldata where symbol = \"$what\" and startDate = \"$start_data\" and endDate = \"$end_data\"");
 
