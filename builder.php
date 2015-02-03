@@ -36,7 +36,7 @@ if (true) {
 		$flag = true;
 		$indices->insert($index);
 		//file_put_contents('log_emi.txt', print_r($e->getAttribute('href'), true));
-		break;
+		//break;
 		
 		while (true)
 		{
