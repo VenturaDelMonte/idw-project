@@ -32,7 +32,7 @@ window.onload = function(ev)
 			var i = 0;
 
 			$.each(data, function(index) {
-		    	console.log(data[index]);
+		    	//console.log(data[index]);
 		    	var incr = Math.min(4, data.length);
 		    	var a = $('<a>').attr('href', data[index]._id.$id).append(data[index].market + ": " + data[index].name);
 		    	var an = $('<a>');
@@ -50,7 +50,7 @@ window.onload = function(ev)
 						$('#select-index-h1').empty();
 						$('#select-index-h1').text(data[index].market);
 					});
-		    		console.log(an);
+		    		//console.log(an);
 		    		loadAsset(data[index]._id.$id, data[index].name);
 		    	});
 		    	tr.append($('<td>').append(a));
@@ -99,7 +99,9 @@ function loadIndices()
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(data) {
+			//console.log(data)
 			$.each(data, function(index) {
+				//data[index] -> Object { _id: Object, name: "NASDAQ 100" }
 		    	//console.log(data[index]);
 		    	var a = $('<a>').attr('href', data[index]._id.$id).append($('<span>').append(data[index].name));
 
@@ -134,6 +136,7 @@ function loadIndex(idx)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(data) {
+			console.log(data)
 			var tr = $('<tr>');
 
 			var cnt = -3;
@@ -141,6 +144,7 @@ function loadIndex(idx)
 
 			$.each(data, function(index) {
 		    	// console.log(data[index]);
+		    	// data[index] Object { name: "Activision Blizzard, Inc ", id: Object }
 		    	var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
 		    	a.click(function (e){
 		    		e.preventDefault();
@@ -193,7 +197,7 @@ function loadAsset(id, name)
 		dataType: "json",
 		success: function(data) {
 			var content = data.data;
-			console.log(data.url);
+			//console.log(data.url);
 			if (content.length > 0) {
 				$('#wikipedia-panel').removeClass('hidden');
 				$('#wiki-data').html(content);
@@ -246,7 +250,7 @@ function loadAsset(id, name)
 	});
 
 
-	// yahoo 
+	// google Finance 
 
 	var req = {"id": "loadGoogleNews", "data": id};
 	$.ajax({
@@ -256,6 +260,8 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
+			//console.log(res)
+			//if there are news...
 			if(res.length >0)
 			{	
 				$('#news-panel').removeClass("hidden");
@@ -298,6 +304,7 @@ function loadAsset(id, name)
 		contentType: "application/json; charset=utf-8",
 		dataType: "json",
 		success: function(res) {
+			//res is the url of the image
 			if(res.length>0)
 			{
 				$('#trends-panel').removeClass('hidden');
@@ -348,6 +355,7 @@ function addYahooHistoricalDataPanel(id)
 			dataType: "json",
 			success: function(res) {
 				//console.log(res);
+				//console.log(res)
 				$("#yahoo-historical-charts").removeClass("hidden");
 				$("#yahoo-historical-panel").removeClass("hidden");
 
