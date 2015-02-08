@@ -32,39 +32,39 @@ window.onload = function(ev)
 			var i = 0;
 
 			$.each(data, function(index) {
-		    	//console.log(data[index]);
-		    	var incr = Math.min(4, data.length);
-		    	var a = $('<a>').attr('href', data[index]._id.$id).append(data[index].market + ": " + data[index].name);
-		    	var an = $('<a>');
+				//console.log(data[index]);
+				var incr = Math.min(4, data.length);
+				var a = $('<a>').attr('href', data[index]._id.$id).append(data[index].market + ": " + data[index].name);
+				var an = $('<a>');
 
-		    	a.click(function (e){
-		    		e.preventDefault();
-		    		$('#select-index-h1').empty();
-		    		an.attr('href',data[index].market_id.$id);
-		    		an.append(data[index].market);
-		    		$('#select-index-h1').append(an);
-		    		an.click(function(e) {
+				a.click(function (e){
+					e.preventDefault();
+					$('#select-index-h1').empty();
+					an.attr('href',data[index].market_id.$id);
+					an.append(data[index].market);
+					$('#select-index-h1').append(an);
+					an.click(function(e) {
 						e.preventDefault();
 						cleanAssetInfo();
 						loadIndex(data[index].market_id.$id);
 						$('#select-index-h1').empty();
 						$('#select-index-h1').text(data[index].market);
 					});
-		    		//console.log(an);
-		    		loadAsset(data[index]._id.$id, data[index].name);
-		    	});
-		    	tr.append($('<td>').append(a));
-		    	if (cnt % incr == 0)
-		    	{
-		    		$('#assets-table').append(tr);
-		    		tr = $('<tr>');
-		    		tr.addClass(col[i]);
-		    	}
-		    	cnt++;
-		    	i++;
-		    	if(i==5)
-		    		i=0;
-		    });
+					//console.log(an);
+					loadAsset(data[index]._id.$id, data[index].name);
+				});
+				tr.append($('<td>').append(a));
+				if (cnt % incr == 0)
+				{
+					$('#assets-table').append(tr);
+					tr = $('<tr>');
+					tr.addClass(col[i]);
+				}
+				cnt++;
+				i++;
+				if(i==5)
+					i=0;
+			});
 
 		},
 		failure: function(errMsg) {
@@ -102,8 +102,8 @@ function loadIndices()
 			//console.log(data)
 			$.each(data, function(index) {
 				//data[index] -> Object { _id: Object, name: "NASDAQ 100" }
-		    	//console.log(data[index]);
-		    	var a = $('<a>').attr('href', data[index]._id.$id).append($('<span>').append(data[index].name));
+				//console.log(data[index]);
+				var a = $('<a>').attr('href', data[index]._id.$id).append($('<span>').append(data[index].name));
 
 				a.click(function(e) {
 					e.preventDefault();
@@ -143,24 +143,24 @@ function loadIndex(idx)
 			var i = 0;
 
 			$.each(data, function(index) {
-		    	// console.log(data[index]);
-		    	// data[index] Object { name: "Activision Blizzard, Inc ", id: Object }
-		    	var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
-		    	a.click(function (e){
-		    		e.preventDefault();
-		    		loadAsset(data[index].id.$id, data[index].name);
-		    	});
-		    	tr.append($('<td>').append(a));
-		    	if (cnt % 4 == 0)
-		    	{
-		    		$('#assets-table').append(tr);
-		    		tr = $('<tr>');
-		    		tr.addClass(col[i]);
-		    	}
-		    	cnt++;
-		    	i++;
-		    	if(i==5)
-		    		i=0;
+				// console.log(data[index]);
+				// data[index] Object { name: "Activision Blizzard, Inc ", id: Object }
+				var a = $('<a>').attr('href', data[index].id.$id).append(data[index].name);
+				a.click(function (e){
+					e.preventDefault();
+					loadAsset(data[index].id.$id, data[index].name);
+				});
+				tr.append($('<td>').append(a));
+				if (cnt % 4 == 0)
+				{
+					$('#assets-table').append(tr);
+					tr = $('<tr>');
+					tr.addClass(col[i]);
+				}
+				cnt++;
+				i++;
+				if(i==5)
+					i=0;
 			});
 		},
 		failure: function(errMsg) {
@@ -382,50 +382,50 @@ function addYahooHistoricalDataPanel(id)
 
 			
 				new Morris.Line({
-					  // ID of the element in which to draw the chart.
-					  element: 'yahoo-historical-charts-volume',
-					  // Chart data records -- each entry in this array corresponds to a point on
-					  // the chart.
-					  data: res[0],
-					  // The name of the data record attribute that contains x-values.
-					  xkey: 'Date',
-					  // A list of names of data record attributes that contain y-values.
-					  ykeys: ['Volume'],
-					  // Labels for the ykeys -- will be displayed when you hover over the
-					  // chart.
-					  labels: ['Volume']
+					// ID of the element in which to draw the chart.
+					element: 'yahoo-historical-charts-volume',
+					// Chart data records -- each entry in this array corresponds to a point on
+					// the chart.
+					data: res[0],
+					// The name of the data record attribute that contains x-values.
+					xkey: 'Date',
+					// A list of names of data record attributes that contain y-values.
+					ykeys: ['Volume'],
+					// Labels for the ykeys -- will be displayed when you hover over the
+					// chart.
+					labels: ['Volume']
 					
 				});
 
 				new Morris.Line({
-					  // ID of the element in which to draw the chart.
-					  element: 'yahoo-historical-charts-open-close',
-					  // Chart data records -- each entry in this array corresponds to a point on
-					  // the chart.
-					  data: res[0],
-					  // The name of the data record attribute that contains x-values.
-					  xkey: 'Date',
-					  // A list of names of data record attributes that contain y-values.
-					  ykeys: ['Open', 'Close', 'Adj_Close'],
-					  // Labels for the ykeys -- will be displayed when you hover over the
-					  // chart.
-					  labels: ['Open', 'Close', 'Adjusted']
+					// ID of the element in which to draw the chart.
+					element: 'yahoo-historical-charts-open-close',
+					// Chart data records -- each entry in this array corresponds to a point on
+					// the chart.
+					data: res[0],
+					// The name of the data record attribute that contains x-values.
+					xkey: 'Date',
+					// A list of names of data record attributes that contain y-values.
+					ykeys: ['Open', 'Close', 'Adj_Close'],
+					// Labels for the ykeys -- will be displayed when you hover over the
+					// chart.
+					labels: ['Open', 'Close', 'Adjusted']
 					
 				});
 
 				new Morris.Line({
-					  // ID of the element in which to draw the chart.
-					  element: 'yahoo-historical-charts-high-low',
-					  // Chart data records -- each entry in this array corresponds to a point on
-					  // the chart.
-					  data: res[0],
-					  // The name of the data record attribute that contains x-values.
-					  xkey: 'Date',
-					  // A list of names of data record attributes that contain y-values.
-					  ykeys: ['High', 'Low'],
-					  // Labels for the ykeys -- will be displayed when you hover over the
-					  // chart.
-					  labels: ['High', 'Low']
+					// ID of the element in which to draw the chart.
+					element: 'yahoo-historical-charts-high-low',
+					// Chart data records -- each entry in this array corresponds to a point on
+					// the chart.
+					data: res[0],
+					// The name of the data record attribute that contains x-values.
+					xkey: 'Date',
+					// A list of names of data record attributes that contain y-values.
+					ykeys: ['High', 'Low'],
+					// Labels for the ykeys -- will be displayed when you hover over the
+					// chart.
+					labels: ['High', 'Low']
 					
 				});
 
@@ -454,10 +454,10 @@ function addYahooHistoricalDataPanel(id)
 	});
 
 	$('#data-chooser .input-daterange').datepicker({
-	    format: "yyyy-mm-dd",
-	    daysOfWeekDisabled: "0,6",
-	    todayHighlight: true,
-	    endDate: new Date()
+		format: "yyyy-mm-dd",
+		daysOfWeekDisabled: "0,6",
+		todayHighlight: true,
+		endDate: new Date()
 	});
 
 }

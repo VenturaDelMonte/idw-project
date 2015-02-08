@@ -21,38 +21,38 @@ class stdObject {
 
 function nodeContent($n, $outer=false) 
 {
-    $d = new DOMDocument('1.0');
-    $b = $d->importNode($n->cloneNode(true),true);
-    $d->appendChild($b); $h = $d->saveHTML();
-    // remove outter tags
-    if (!$outer) $h = substr($h,strpos($h,'>')+1,-(strlen($n->nodeName)+4));
-    return $h;
+	$d = new DOMDocument('1.0');
+	$b = $d->importNode($n->cloneNode(true),true);
+	$d->appendChild($b); $h = $d->saveHTML();
+	// remove outter tags
+	if (!$outer) $h = substr($h,strpos($h,'>')+1,-(strlen($n->nodeName)+4));
+	return $h;
 }
 
 function scrapePage($source, $tidy = false)
 {
 	$curl = curl_init();
 	$doc = new DOMDocument('1.0', 'utf-8');
-    /*Tidy is a binding for the Tidy HTML clean and repair utility which allows you to 
-    not only clean and otherwise manipulate HTML documents, 
-    but also traverse the document tree. */
+	/*Tidy is a binding for the Tidy HTML clean and repair utility which allows you to 
+	not only clean and otherwise manipulate HTML documents, 
+	but also traverse the document tree. */
 	$tidy = new tidy();
 
-    /*CURLOPT_URL: The URL to fetch*/
+	/*CURLOPT_URL: The URL to fetch*/
 	curl_setopt($curl, CURLOPT_URL, $source);
-    /*CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the return value 
-    of curl_exec() instead of outputting it out directly. */
+	/*CURLOPT_RETURNTRANSFER: TRUE to return the transfer as a string of the return value 
+	of curl_exec() instead of outputting it out directly. */
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	/*CURLOPT_USERAGENT: header to be used in a HTTP request*/
-    curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
+	curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.91 Safari/537.36");
 	curl_setopt($curl, CURLOPT_FAILONERROR, true);
 	curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-    /*CURLOPT_AUTOREFERER: TRUE to automatically set the Referer: 
-    field in requests where it follows a Location: redirect. */
+	/*CURLOPT_AUTOREFERER: TRUE to automatically set the Referer: 
+	field in requests where it follows a Location: redirect. */
 	curl_setopt($curl, CURLOPT_AUTOREFERER, true);
-    /*CURLOPT_HEADER: TRUE to include the header in the output.*/
+	/*CURLOPT_HEADER: TRUE to include the header in the output.*/
 	curl_setopt($curl, CURLOPT_HEADER, false);
-    /*CURLOPT_TIMEOUT: The maximum number of seconds to allow cURL functions to execute. */
+	/*CURLOPT_TIMEOUT: The maximum number of seconds to allow cURL functions to execute. */
 	curl_setopt($curl, CURLOPT_TIMEOUT, 10);
 	$result = curl_exec_utf8($curl);
 	
@@ -62,9 +62,9 @@ function scrapePage($source, $tidy = false)
 	else
 		$clean = $result;//$tidy->repairString($result, null, "UTF-8");
 	$doc->strictErrorChecking = false;
-    /*Enables recovery mode, i.e. trying to parse non-well formed documents. */
+	/*Enables recovery mode, i.e. trying to parse non-well formed documents. */
 	$doc->recover = true;
-    /*Load HTML from a string */
+	/*Load HTML from a string */
 	$doc->loadHTML($clean);
 
 	return new DOMXPath($doc);
@@ -74,141 +74,141 @@ function scrapePage($source, $tidy = false)
 see: http://stackoverflow.com/questions/2510868/php-convert-curl-exec-output-to-utf8*/
 function curl_exec_utf8($ch)
 {
-    $data = curl_exec($ch);
-    if (!is_string($data)) return $data;
+	$data = curl_exec($ch);
+	if (!is_string($data)) return $data;
 
-    unset($charset);
-    $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+	unset($charset);
+	$content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
 
-    /* 1: HTTP Content-Type: header */
-    preg_match( '@([\w/+]+)(;\s*charset=(\S+))?@i', $content_type, $matches );
-    if ( isset( $matches[3] ) )
-        $charset = $matches[3];
+	/* 1: HTTP Content-Type: header */
+	preg_match( '@([\w/+]+)(;\s*charset=(\S+))?@i', $content_type, $matches );
+	if ( isset( $matches[3] ) )
+		$charset = $matches[3];
 
-    /* 2: <meta> element in the page */
-    if (!isset($charset)) {
-        preg_match( '@<meta\s+http-equiv="Content-Type"\s+content="([\w/]+)(;\s*charset=([^\s"]+))?@i', $data, $matches );
-        if ( isset( $matches[3] ) )
-            $charset = $matches[3];
-    }
+	/* 2: <meta> element in the page */
+	if (!isset($charset)) {
+		preg_match( '@<meta\s+http-equiv="Content-Type"\s+content="([\w/]+)(;\s*charset=([^\s"]+))?@i', $data, $matches );
+		if ( isset( $matches[3] ) )
+			$charset = $matches[3];
+	}
 
-    /* 3: <xml> element in the page */
-    if (!isset($charset)) {
-        preg_match( '@<\?xml.+encoding="([^\s"]+)@si', $data, $matches );
-        if ( isset( $matches[1] ) )
-            $charset = $matches[1];
-    }
+	/* 3: <xml> element in the page */
+	if (!isset($charset)) {
+		preg_match( '@<\?xml.+encoding="([^\s"]+)@si', $data, $matches );
+		if ( isset( $matches[1] ) )
+			$charset = $matches[1];
+	}
 
-    /* 4: PHP's heuristic detection */
-    if (!isset($charset)) {
-        $encoding = mb_detect_encoding($data);
-        if ($encoding)
-            $charset = $encoding;
-    }
+	/* 4: PHP's heuristic detection */
+	if (!isset($charset)) {
+		$encoding = mb_detect_encoding($data);
+		if ($encoding)
+			$charset = $encoding;
+	}
 
-    /* 5: Default for HTML */
-    if (!isset($charset)) {
-        if (strstr($content_type, "text/html") === 0)
-            $charset = "ISO 8859-1";
-    }
+	/* 5: Default for HTML */
+	if (!isset($charset)) {
+		if (strstr($content_type, "text/html") === 0)
+			$charset = "ISO 8859-1";
+	}
 
-    /* Convert it if it is anything but UTF-8 */
-    /* You can change "UTF-8"  to "UTF-8//IGNORE" to 
-       ignore conversion errors and still output something reasonable */
-    if (isset($charset) && strtoupper($charset) != "UTF-8")
-        $data = iconv($charset, 'UTF-8', $data);
+	/* Convert it if it is anything but UTF-8 */
+	/* You can change "UTF-8"  to "UTF-8//IGNORE" to 
+	   ignore conversion errors and still output something reasonable */
+	if (isset($charset) && strtoupper($charset) != "UTF-8")
+		$data = iconv($charset, 'UTF-8', $data);
 
-    
-    return $data;
+	
+	return $data;
 }
 
 
 class RecursiveDOMIterator implements RecursiveIterator
 {
-    /**
-     * Current Position in DOMNodeList
-     * @var Integer
-     */
-    protected $_position;
+	/**
+	 * Current Position in DOMNodeList
+	 * @var Integer
+	 */
+	protected $_position;
 
-    /**
-     * The DOMNodeList with all children to iterate over
-     * @var DOMNodeList
-     */
-    protected $_nodeList;
+	/**
+	 * The DOMNodeList with all children to iterate over
+	 * @var DOMNodeList
+	 */
+	protected $_nodeList;
 
-    /**
-     * @param DOMNode $domNode
-     * @return void
-     */
-    public function __construct(DOMNode $domNode)
-    {
-        $this->_position = 0;
-        $this->_nodeList = $domNode->childNodes;
-    }
+	/**
+	 * @param DOMNode $domNode
+	 * @return void
+	 */
+	public function __construct(DOMNode $domNode)
+	{
+		$this->_position = 0;
+		$this->_nodeList = $domNode->childNodes;
+	}
 
-    /**
-     * Returns the current DOMNode
-     * @return DOMNode
-     */
-    public function current()
-    {
-        return $this->_nodeList->item($this->_position);
-    }
+	/**
+	 * Returns the current DOMNode
+	 * @return DOMNode
+	 */
+	public function current()
+	{
+		return $this->_nodeList->item($this->_position);
+	}
 
-    /**
-     * Returns an iterator for the current iterator entry
-     * @return RecursiveDOMIterator
-     */
-    public function getChildren()
-    {
-        return new self($this->current());
-    }
+	/**
+	 * Returns an iterator for the current iterator entry
+	 * @return RecursiveDOMIterator
+	 */
+	public function getChildren()
+	{
+		return new self($this->current());
+	}
 
-    /**
-     * Returns if an iterator can be created for the current entry.
-     * @return Boolean
-     */
-    public function hasChildren()
-    {
-        return $this->current()->hasChildNodes();
-    }
+	/**
+	 * Returns if an iterator can be created for the current entry.
+	 * @return Boolean
+	 */
+	public function hasChildren()
+	{
+		return $this->current()->hasChildNodes();
+	}
 
-    /**
-     * Returns the current position
-     * @return Integer
-     */
-    public function key()
-    {
-        return $this->_position;
-    }
+	/**
+	 * Returns the current position
+	 * @return Integer
+	 */
+	public function key()
+	{
+		return $this->_position;
+	}
 
-    /**
-     * Moves the current position to the next element.
-     * @return void
-     */
-    public function next()
-    {
-        $this->_position++;
-    }
+	/**
+	 * Moves the current position to the next element.
+	 * @return void
+	 */
+	public function next()
+	{
+		$this->_position++;
+	}
 
-    /**
-     * Rewind the Iterator to the first element
-     * @return void
-     */
-    public function rewind()
-    {
-        $this->_position = 0;
-    }
+	/**
+	 * Rewind the Iterator to the first element
+	 * @return void
+	 */
+	public function rewind()
+	{
+		$this->_position = 0;
+	}
 
-    /**
-     * Checks if current position is valid
-     * @return Boolean
-     */
-    public function valid()
-    {
-        return $this->_position < $this->_nodeList->length;
-    }
+	/**
+	 * Checks if current position is valid
+	 * @return Boolean
+	 */
+	public function valid()
+	{
+		return $this->_position < $this->_nodeList->length;
+	}
 }
 
 ?>
