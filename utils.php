@@ -29,7 +29,7 @@ function nodeContent($n, $outer=false)
 	return $h;
 }
 
-function scrapePage($source, $tidy = false)
+function scrapePage($source, $must_tidy = false)
 {
 	$curl = curl_init();
 	$doc = new DOMDocument('1.0', 'utf-8');
@@ -57,7 +57,7 @@ function scrapePage($source, $tidy = false)
 	$result = curl_exec_utf8($curl);
 	
 	curl_close($curl);
-	if ($tidy == true)
+	if ($must_tidy == true)
 		$clean = $tidy->repairString($result);
 	else
 		$clean = $result;//$tidy->repairString($result, null, "UTF-8");
