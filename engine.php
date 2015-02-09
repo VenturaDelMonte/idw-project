@@ -74,10 +74,10 @@
 			$what = $asset['sym'];	
 		}
 
-		$xpath=scrapePage("http://www.bigcharts.com/quickchart/quickchart.asp?symb=$what&insttype=Stock");
+		$xpath=scrapePage("http://bigcharts.marketwatch.com/quickchart/quickchart.asp?symb=$what&insttype=&freq=&show=");
 		//ricerchiamo qualsiasi tipo di nodo nel documento che ha un attributo class
 		//abbia come valore "padded vatop" e ci posizioniamo sul figlio img
-		$res = $xpath -> query("//*[@class=\"padded vatop\"]/img");
+		$res = $xpath -> query("//*[@class=\"padded vatop\"]/img"); 
 		return($res->item(0)->getAttribute("src"));
 	}
 

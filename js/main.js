@@ -309,7 +309,7 @@ function loadAsset(id, name)
 			{
 				$('#trends-panel').removeClass('hidden');
 				$("#trends-data").empty();
-				$("#trends-data").append($("<img>").attr("src", res));
+				$("#trends-data").append($("<img>").attr("src", res).addClass("img-responsive center-block"));
 			}
 		},
 		failure: function(errMsg) {
